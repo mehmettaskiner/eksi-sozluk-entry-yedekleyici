@@ -1,4 +1,4 @@
-eksi sozluk entry yedekleyici
+eksi entry yedekleyici
 
 -----------------------------------
 
@@ -7,5 +7,6 @@ nicki girilen yazarın entrylerini yedekler.
 
 beautifulsoup4 gerektirir.
 
-command line'da "python eksi_entry_yedekleyici.py" yapılarak çalıştırılabilir.
+command line'a "python eksi_entry_yedekleyici.py" yazılarak çalıştırılabilir.
 herhangi bir progress bar bulunmamaktadır.
+scriptin bulunduğu dizin'e "yazar adi yedek.txt" adında metin dosyası oluşturur.
