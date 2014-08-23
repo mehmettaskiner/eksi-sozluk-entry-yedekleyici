@@ -1,6 +1,7 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 import urllib2
 from bs4 import BeautifulSoup
+import sys
 
 def get_page_data(url):
     request = urllib2.Request(url)
@@ -22,10 +23,12 @@ def start_fetching():
     f.write("yedeklenen yazar: " + yazar_adi + "\n\n\n")
     f.write("-----------------------------------------\n\n\n")
 
+    print 'kaydediliyor',
     son_entryleri_soup = soup_data(get_page_data(son_entry_url))
 
     sayfa_sayisi = int(son_entryleri_soup.find("div", attrs={'class': 'pager'})['data-pagecount'])
     for i in range(1, sayfa_sayisi + 1):
+        print '\b.',
         sayfa_url = son_entry_url + "?p=" + str(i)
         sayfa_soup = soup_data(get_page_data(sayfa_url))
         
@@ -39,6 +42,7 @@ def start_fetching():
             entry = entry_soup.find("div", attrs={'class': 'content', 'itemprop': 'commentText'}).text.encode('utf-8')
             f.write(baslik + ":\n")
             f.write(entry + "\n\n")
+        sys.stdout.flush()
 
     f.close()
 
