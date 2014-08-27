@@ -83,7 +83,7 @@ class entry_yedek():
 
 
 if __name__ == "__main__":
-    start = timeit.default_timer()
+    start = 0
     if args.yazar is None:
         yazar_adi = raw_input("yazar adini girin: ")
     else:
@@ -91,6 +91,7 @@ if __name__ == "__main__":
     if yazar_adi:
         ey = entry_yedek()
         ey.yazar_adi = yazar_adi
+        start = timeit.default_timer()
         ey.start_fetching()
     else:
         print 'o isim buraya yazilacak'
