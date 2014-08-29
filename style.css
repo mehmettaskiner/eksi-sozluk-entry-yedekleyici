@@ -11,7 +11,8 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 body {
     line-height: 1;
-    width: 720
+    width: 720;
+    background-color: #ebebeb;
 }
 ul {
     list-style: none outside none;
