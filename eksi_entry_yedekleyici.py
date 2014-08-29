@@ -65,7 +65,7 @@ class entry_yedek():
         logging.info("kaydediliyor")
         logging.info("toplam sayfa sayisi : %s" % sayfa_sayisi)
 
-        f.write('<html><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="./style.css"><title>' + self.yazar_adi + '</title></head><body><div class="main_div"')
+        f.write('<html><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="./style.css"><title>' + self.yazar_adi + '</title></head><body><div class="main_div">')
 
         for i in range(1, sayfa_sayisi + 1):
             logging.info("islenilen sayfa : %s " % i)
