@@ -10,13 +10,9 @@ from lxml import html
 parser = argparse.ArgumentParser(formatter_class=RawTextHelpFormatter)
 parser.add_argument('-y', '--yazar',
                     help='yedegini cikarmak istediginiz yazarin nicki')
-parser.add_argument('-v', '--verbose',
-                    help='debug icin bisiler bas ekrana aslanim',
-                    action='store_true')
 args = parser.parse_args()
 
-if args.verbose:
-    logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG)
 
 class entry_yedek():
     def __init__(self):
@@ -43,15 +39,9 @@ class entry_yedek():
             print 'bu yazari (%s) bulamadim...' % self.yazar_adi
             exit()
 
-    def burry_inside_div(self, text, div_class):
-        div_tag = '<div class="' + div_class + '">'
-        div_close = '</div>'
-        new_text = div_tag + text + div_close
-        return new_text
-        
     def start_fetching(self):
         yazar_adi_replaced = yazar_adi.replace(" ", "-")
-        son_entry_url = self.eksi_base_url + "/biri/" + yazar_adi_replaced + "/son-entryleri"
+        son_entry_url = self.eksi_base_url + "/basliklar/istatistik/" + yazar_adi_replaced + "/son-entryleri"
         page_info = self.page_tree(son_entry_url).find(".//div[@class='pager']")
         if page_info is None:
             sayfa_sayisi = 1
@@ -59,13 +49,11 @@ class entry_yedek():
             sayfa_sayisi = int(page_info.get('data-pagecount'))
 
         logging.info("yedeklenen yazar: " + yazar_adi)
-        filename = yazar_adi + "_yedek.html"
+        filename = yazar_adi_replaced + "_yedek.txt"
         f = open(filename, "wb")
 
         logging.info("kaydediliyor")
         logging.info("toplam sayfa sayisi : %s" % sayfa_sayisi)
-
-        f.write('<html><head><meta charset="utf-8"><link rel="stylesheet" type="text/css" href="./style.css"><title>' + self.yazar_adi + '</title></head><body><div class="main_div">')
 
         for i in range(1, sayfa_sayisi + 1):
             logging.info("islenilen sayfa : %s " % i)
@@ -79,15 +67,11 @@ class entry_yedek():
                     entry = self.stringify_children(
                         entry_tree.find(".//div[@class='content'][@itemprop='commentText']")).encode('utf-8').strip()
                     tarih = entry_tree.find(".//time").text.strip()
-                    baslik = self.burry_inside_div(baslik, "baslik")
-                    entry = self.burry_inside_div(entry, "content")
-                    tarih = self.burry_inside_div(tarih, "time")
 
-                    f.write("<h1>%s</h1><hr>\n%s\n<time>%s</time>\n\n" % (baslik, entry, tarih))
+                    f.write("%s\n%s\n%s\n\n" % (baslik, entry, tarih))
 
             sys.stdout.flush()
 
-        f.write('</div></body></html>')
         f.close()
 
 
