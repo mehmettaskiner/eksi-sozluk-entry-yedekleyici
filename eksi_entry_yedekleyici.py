@@ -42,11 +42,16 @@ class entry_yedek():
     def start_fetching(self):
         yazar_adi_replaced = yazar_adi.replace(" ", "-")
         son_entry_url = self.eksi_base_url + "/basliklar/istatistik/" + yazar_adi_replaced + "/son-entryleri"
-        page_info = self.page_tree(son_entry_url).find(".//div[@class='pager']")
+        ikinci_sayfa_url = son_entry_url + '?p=' + str(2);
+
+        page_info = self.page_tree(ikinci_sayfa_url).find(".//div[@class='pager']")
+
         if page_info is None:
             sayfa_sayisi = 1
         else:
             sayfa_sayisi = int(page_info.get('data-pagecount'))
+
+        print "PAGE INFO::::::::" + str(sayfa_sayisi)
 
         logging.info("yedeklenen yazar: " + yazar_adi)
         filename = yazar_adi_replaced + "_yedek.txt"
@@ -65,8 +70,9 @@ class entry_yedek():
                 if entry_tree is not None:
                     baslik = entry_tree.find(".//h1[@id='title']").get('data-title').encode('utf-8').strip()
                     entry = self.stringify_children(
-                        entry_tree.find(".//div[@class='content'][@itemprop='commentText']")).encode('utf-8').strip()
-                    tarih = entry_tree.find(".//time").text.strip()
+                        entry_tree.find(".//div[@class='content']")).encode('utf-8').strip()
+
+                    tarih = entry_tree.find(".//a[@class='entry-date permalink']").text.strip()
 
                     f.write("%s\n%s\n%s\n\n" % (baslik, entry, tarih))
 
